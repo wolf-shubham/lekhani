@@ -1,3 +1,4 @@
+import axios from 'axios'
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 
@@ -6,9 +7,16 @@ function Login() {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
-        console.log(email, password);
+        // console.log(email, password);
+        const config = {
+            headers: {
+                'Content-type': 'application/json'
+            }
+        }
+        const { data } = await axios.post('/api/user/login', { email, password }, config)
+        console.log(data);
     }
 
     return (
