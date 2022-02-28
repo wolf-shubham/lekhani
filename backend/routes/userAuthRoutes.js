@@ -1,10 +1,8 @@
 const express = require('express')
 const route = express()
-const { registerController } = require('../controllers/userAuthControllers')
+const { registerController, loginController } = require('../controllers/userAuthControllers')
 
-route.get('/login', (req, res) => {
-    res.send({ message: 'login route' })
-})
+route.post('/login', loginController)
 
 route.post('/register', registerController)
 
