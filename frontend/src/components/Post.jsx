@@ -19,8 +19,11 @@ function Post() {
             .then(result => {
                 setData(result.data)
             })
+            .catch(error => {
+                console.log(error);
+            })
     }, [setData])
-    console.log(data);
+    // console.log(data);
     return (
         <>
             <div>Post</div>

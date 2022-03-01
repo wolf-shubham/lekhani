@@ -1,5 +1,6 @@
 import axios from 'axios'
 import React from 'react'
+import { useEffect } from 'react'
 import { useState } from 'react'
 
 function CreatePost() {
@@ -18,6 +19,7 @@ function CreatePost() {
         const { data } = await axios.post('/api/post/createpost', { body }, config)
         console.log(data);
     }
+
     return (
         <>
             <div>CreatePost</div>

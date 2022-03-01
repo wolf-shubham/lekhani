@@ -12,14 +12,14 @@ const createPostController = async (req, res) => {
         body,
         author: req.user
     }).save()
-    res.status(200).json({ post })
+    return res.status(200).json(post)
 }
 
 const getAllPosts = async (req, res) => {
     await Post.find()
         .populate('author', '_id name')
         .then(posts => {
-            res.json(posts)
+            return res.json(posts)
         })
         .catch(error => res.status(401).json({ message: 'error while fetching all posts' }))
 }

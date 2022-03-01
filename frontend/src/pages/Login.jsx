@@ -8,6 +8,7 @@ function Login() {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
+
     const handleSubmit = async (e) => {
         e.preventDefault()
         // console.log(email, password);
@@ -19,6 +20,7 @@ function Login() {
         const { data } = await axios.post('/api/user/login', { email, password }, config)
         console.log(data);
         localStorage.setItem('userInfo', JSON.stringify(data))
+        history('/profile')
     }
 
     return (
