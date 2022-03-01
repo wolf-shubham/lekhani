@@ -4,7 +4,7 @@ const authMiddleware = require('../middlewares/authMiddleware')
 const route = express()
 
 
-route.post('/createPost', authMiddleware, createPostController)
+route.post('/createpost', authMiddleware, createPostController)
 route.get('/allposts', getAllPosts)
 route.get('/userposts', authMiddleware, getUserPosts)
 

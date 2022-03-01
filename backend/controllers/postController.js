@@ -6,7 +6,7 @@ const createPostController = async (req, res) => {
     if (!body) {
         return res.status(401).json({ message: 'please add some text first!' })
     }
-    console.log(req.user);
+    // console.log(req.user);
     // res.json({ message: 'create post' })
     const post = await new Post({
         body,

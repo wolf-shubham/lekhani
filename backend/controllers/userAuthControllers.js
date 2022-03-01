@@ -32,6 +32,12 @@ const loginController = async (req, res) => {
     }
     const token = generateToken(user._id)
     return res.status(200).json({
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        displaypic: user.displaypic,
+        followers: user.followers,
+        following: user.following,
         token, message: "successful login"
     })
 }

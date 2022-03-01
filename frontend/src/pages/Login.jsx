@@ -1,9 +1,10 @@
 import axios from 'axios'
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 function Login() {
 
+    const history = useNavigate()
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
@@ -17,6 +18,7 @@ function Login() {
         }
         const { data } = await axios.post('/api/user/login', { email, password }, config)
         console.log(data);
+        localStorage.setItem('userInfo', JSON.stringify(data))
     }
 
     return (

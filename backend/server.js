@@ -12,7 +12,7 @@ dotenv.config()
 const PORT = process.env.PORT || 5000
 
 app.use('/api/user', userRoute)
-app.use('/api/post/', postRoutes)
+app.use('/api/post', postRoutes)
 
 mongoose.connect(process.env.MONGODB_URL, {
     useNewUrlParser: true,
