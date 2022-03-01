@@ -3,6 +3,7 @@ const dotenv = require('dotenv')
 const mongoose = require('mongoose')
 
 const userRoute = require('./routes/userAuthRoutes')
+const postRoutes = require('./routes/postRoutes')
 
 
 const app = express()
@@ -11,6 +12,7 @@ dotenv.config()
 const PORT = process.env.PORT || 5000
 
 app.use('/api/user', userRoute)
+app.use('/api/post/', postRoutes)
 
 mongoose.connect(process.env.MONGODB_URL, {
     useNewUrlParser: true,
