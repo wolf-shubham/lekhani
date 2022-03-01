@@ -4,6 +4,7 @@ import CreatePost from '../components/CreatePost'
 import Post from '../components/Post'
 
 function Profile() {
+
     useEffect(() => {
 
     }, [])

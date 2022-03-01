@@ -22,7 +22,7 @@ function Post() {
             .catch(error => {
                 console.log(error);
             })
-    }, [setData])
+    }, [setData, userInfo])
     // console.log(data);
     return (
         <>
