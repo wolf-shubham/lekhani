@@ -28,9 +28,9 @@ const getUserPosts = async (req, res) => {
     const posts = await Post.find({ author: req.user._id })
         .populate('author', '_id name')
     if (posts) {
-        res.status(200).json({ posts })
+        return res.status(200).json(posts)
     } else {
-        res.status(404).json({ message: 'no post available' })
+        return res.status(404).json({ message: 'no post available' })
     }
 }
 module.exports = { createPostController, getAllPosts, getUserPosts }

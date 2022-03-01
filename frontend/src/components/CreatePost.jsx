@@ -5,7 +5,6 @@ import { useState } from 'react'
 function CreatePost() {
     const [body, setBody] = useState('')
     const userInfo = JSON.parse(localStorage.getItem('userInfo'))
-    // console.log(userInfo.token);
 
     const handleSubmit = async (e) => {
         e.preventDefault()
