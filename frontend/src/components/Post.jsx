@@ -1,33 +1,24 @@
-import axios from 'axios'
-import React from 'react'
-import { useEffect } from 'react'
-import { useState } from 'react'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { userPostsAction } from '../stateManagement/actions/postActions'
+
 
 function Post() {
-    const userInfo = JSON.parse(localStorage.getItem('userInfo'))
+    // const userInfo = JSON.parse(localStorage.getItem('userInfo'))
 
-    const [data, setData] = useState([])
+    const dispatch = useDispatch()
+
+    const posts = useSelector((state) => state.userPosts)
+    const { loading, userPostsData, error } = posts
+    // console.log(userPostsData);
 
     useEffect(() => {
-        const config = {
-            headers: {
-                'Content-type': 'application/json',
-                'Authorization': `Bearer ${userInfo.token}`
-            }
-        }
-        axios.get('/api/post/userposts', config)
-            .then(result => {
-                setData(result.data)
-            })
-            .catch(error => {
-                console.log(error);
-            })
-    }, [setData, userInfo])
-    // console.log(data);
+        dispatch(userPostsAction())
+    }, [dispatch])
     return (
         <>
             <div>Post</div>
-            {data.map(post => (
+            {userPostsData?.map(post => (
                 <div key={post._id} style={{ backgroundColor: 'darkgrey' }}>
                     <h2>{post.body}</h2>
                     <h4>author : {post.author.name}</h4>
