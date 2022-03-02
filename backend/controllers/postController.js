@@ -33,4 +33,24 @@ const getUserPosts = async (req, res) => {
         return res.status(404).json({ message: 'no post available' })
     }
 }
-module.exports = { createPostController, getAllPosts, getUserPosts }
+
+const singlepost = async (req, res) => {
+    const post = await Post.findById(req.params.id)
+    if (post) {
+        return res.status(200).json(post)
+    } else {
+        return res.status(404).json({ message: 'error post not find.' })
+    }
+}
+
+const deletepost = async (req, res) => {
+    const post = await Post.findById(req.params.id)
+    if (post) {
+        await post.remove()
+        return res.status(200).json({ message: 'post deleted' })
+    } else {
+        return res.status(404).json({ message: 'post not deleted.' })
+    }
+}
+
+module.exports = { createPostController, getAllPosts, getUserPosts, singlepost, deletepost }
