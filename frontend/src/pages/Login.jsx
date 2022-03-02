@@ -1,6 +1,7 @@
-import axios from 'axios'
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { LoginAction } from '../stateManagement/actions/userActions'
 
 function Login() {
 
@@ -8,19 +9,13 @@ function Login() {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
+    const dispatch = useDispatch()
+    const userLogin = useSelector((state) => state.userLogin)
+    const { loading, userData, error } = userLogin
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        // console.log(email, password);
-        const config = {
-            headers: {
-                'Content-type': 'application/json'
-            }
-        }
-        const { data } = await axios.post('/api/user/login', { email, password }, config)
-        console.log(data);
-        localStorage.setItem('userInfo', JSON.stringify(data))
-        history('/profile')
+        dispatch(LoginAction(email, password))
     }
 
     return (
