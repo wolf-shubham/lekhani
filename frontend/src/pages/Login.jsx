@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { LoginAction } from '../stateManagement/actions/userActions'
+import { useEffect } from 'react'
 
 function Login() {
 
@@ -18,6 +19,11 @@ function Login() {
         dispatch(LoginAction(email, password))
     }
 
+    useEffect(() => {
+        if (userData) {
+            history('/home')
+        }
+    }, [history, userData])
     return (
         <>
             <h1>Login...</h1>
