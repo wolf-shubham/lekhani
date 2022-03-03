@@ -5,7 +5,8 @@ const postSchema = mongoose.Schema({
     body: { type: String, required: true },
     likes: [{ type: ObjectId, ref: 'User' }],
     comments: [{ text: String, commentPostedBy: { type: ObjectId, ref: 'User' } }],
-    author: { type: ObjectId, ref: 'User' }
+    author: { type: ObjectId, ref: 'User' },
+    createdAt: { type: Date, default: Date.now }
 }, { timestamps: true })
 
 module.exports = mongoose.model('Post', postSchema)

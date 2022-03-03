@@ -26,7 +26,9 @@ const userSchema = mongoose.Schema(
         following: [{
             type: ObjectId,
             ref: "User"
-        }]
+        }],
+        userposts: [{ type: ObjectId, ref: "Post" }],
+
     }
 )
 

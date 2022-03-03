@@ -42,4 +42,43 @@ const loginController = async (req, res) => {
     })
 }
 
-module.exports = { registerController, loginController }
+const followAndUnfollowUser = async (req, res) => {
+    try {
+        const userToFollow = await User.findById(req.body.id)
+        const loggedUser = await User.findById(req.user._id)
+        console.log(loggedUser);
+        if (!userToFollow) {
+            return res.status(404).json({ message: 'user not found' })
+        }
+
+        if (loggedUser.following.includes(userToFollow._id)) {
+            const indexOfFollowing = loggedUser.following.indexOf(userToFollow._id);
+            const indexOfFollowers = userToFollow.followers.indexOf(loggedUser._id);
+
+            loggedUser.following.splice(indexOfFollowing, 1);
+            userToFollow.followers.splice(indexOfFollowers, 1);
+
+            await loggedUser.save();
+            await userToFollow.save();
+
+            return res.status(200).json({
+                success: true,
+                message: "User Unfollowed",
+            });
+        } else {
+            loggedUser.following.push(userToFollow._id)
+            userToFollow.followers.push(loggedUser._id)
+
+            await loggedUser.save()
+            await userToFollow.save()
+
+            return res.status(200).json({ message: 'user followed' })
+        }
+
+    } catch (error) {
+        return res.status(404).json({ message: 'cannot follow user' })
+    }
+}
+
+
+module.exports = { registerController, loginController, followAndUnfollowUser }

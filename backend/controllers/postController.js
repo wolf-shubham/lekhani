@@ -1,13 +1,13 @@
 const Post = require("../models/post")
+const User = require("../models/userModel")
+// const User = require("../models/userModel")
 
 const createPostController = async (req, res) => {
-    // res.json({ message: 'create post' })
     const { body } = req.body
     if (!body) {
         return res.status(401).json({ message: 'please add some text first!' })
     }
     // console.log(req.user);
-    // res.json({ message: 'create post' })
     const post = await new Post({
         body,
         author: req.user
@@ -53,24 +53,35 @@ const deletepost = async (req, res) => {
     }
 }
 
-const likepost = async (req, res) => {
-    const post = await Post.findByIdAndUpdate(req.body.id, { $push: { likes: req.user._id } }, { new: true })
-    if (post) {
-        res.status(200).json(post)
-    } else {
-        res.status(404).json({ message: 'error not found' })
+const likeAndUnlikePost = async (req, res) => {
+    try {
+        const post = await Post.findById(req.body.id)
+        if (post.likes.includes(req.user._id)) {
+            const index = post.likes.indexOf(req.user._id)
+            post.likes.splice(index, 1)
+            await post.save()
+            return res.status(200).json({ message: 'post unliked' })
+        }
+        post.likes.push(req.user._id)
+        await post.save()
+    } catch (error) {
+        res.status(500).json({ message: 'error while liking' })
     }
 
 }
 
-const unlikepost = async (req, res) => {
-    const post = await Post.findByIdAndUpdate(req.body.id, { $pull: { likes: req.user._id } }, { new: true })
-    if (post) {
-        res.status(200).json(post)
-    } else {
-        res.status(404).json({ message: 'error not found' })
+const getfollowingposts = async (req, res) => {
+    try {
+        const user = await User.find(req.user._id)
+        console.log(user);
+
+        return res.status(200).json(user)
+    } catch (error) {
+        return res.status(404).json({ message: 'no post available' })
+
     }
+
 }
 
 
-module.exports = { createPostController, getAllPosts, getUserPosts, singlepost, deletepost, likepost, unlikepost }
+module.exports = { createPostController, getAllPosts, getUserPosts, singlepost, deletepost, likeAndUnlikePost, getfollowingposts }

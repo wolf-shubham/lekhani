@@ -1,5 +1,5 @@
 const express = require('express')
-const { createPostController, getAllPosts, getUserPosts, singlepost, deletepost, likepost, unlikepost } = require('../controllers/postController')
+const { createPostController, getAllPosts, getUserPosts, singlepost, deletepost, likeAndUnlikePost, getfollowingposts } = require('../controllers/postController')
 const authMiddleware = require('../middlewares/authMiddleware')
 const route = express()
 
@@ -9,8 +9,8 @@ route.get('/allposts', getAllPosts)
 route.get('/userposts', authMiddleware, getUserPosts)
 route.get('/:id', singlepost)
 route.delete('/:id', authMiddleware, deletepost)
-route.put('/likepost', authMiddleware, likepost)
-route.put('/unlikepost', authMiddleware, unlikepost)
+route.put('/likepost', authMiddleware, likeAndUnlikePost)
+route.get('/followposts', authMiddleware, getfollowingposts)
 
 
 module.exports = route
