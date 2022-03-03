@@ -53,4 +53,24 @@ const deletepost = async (req, res) => {
     }
 }
 
-module.exports = { createPostController, getAllPosts, getUserPosts, singlepost, deletepost }
+const likepost = async (req, res) => {
+    const post = await Post.findByIdAndUpdate(req.body.id, { $push: { likes: req.user._id } }, { new: true })
+    if (post) {
+        res.status(200).json(post)
+    } else {
+        res.status(404).json({ message: 'error not found' })
+    }
+
+}
+
+const unlikepost = async (req, res) => {
+    const post = await Post.findByIdAndUpdate(req.body.id, { $pull: { likes: req.user._id } }, { new: true })
+    if (post) {
+        res.status(200).json(post)
+    } else {
+        res.status(404).json({ message: 'error not found' })
+    }
+}
+
+
+module.exports = { createPostController, getAllPosts, getUserPosts, singlepost, deletepost, likepost, unlikepost }
