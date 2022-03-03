@@ -1,6 +1,5 @@
 const Post = require("../models/post")
 const User = require("../models/userModel")
-// const User = require("../models/userModel")
 
 const createPostController = async (req, res) => {
     const { body } = req.body
@@ -21,7 +20,7 @@ const getAllPosts = async (req, res) => {
         .then(posts => {
             return res.json(posts)
         })
-        .catch(error => res.status(401).json({ message: 'error while fetching all posts' }))
+        .catch(error => res.status(401).json({ message: 'error while fetching all posts', error }))
 }
 
 const getUserPosts = async (req, res) => {
@@ -64,24 +63,25 @@ const likeAndUnlikePost = async (req, res) => {
         }
         post.likes.push(req.user._id)
         await post.save()
+        return res.status(200).json({ message: 'post liked' })
     } catch (error) {
         res.status(500).json({ message: 'error while liking' })
     }
 
 }
 
-const getfollowingposts = async (req, res) => {
-    try {
-        const user = await User.find(req.user._id)
-        console.log(user);
 
-        return res.status(200).json(user)
-    } catch (error) {
-        return res.status(404).json({ message: 'no post available' })
+// const getfollowingposts = async (req, res) => {//this one
+//     try {
+//         const user = await User.findOne(req.user.id)
+//         console.log(user);
+//         return res.status(200).json(user)
+//     } catch (error) {
+//         return res.status(404).json({ message: 'no post available' })
 
-    }
+//     }
 
-}
+// }
 
 
-module.exports = { createPostController, getAllPosts, getUserPosts, singlepost, deletepost, likeAndUnlikePost, getfollowingposts }
+module.exports = { createPostController, getAllPosts, getUserPosts, singlepost, deletepost, likeAndUnlikePost }

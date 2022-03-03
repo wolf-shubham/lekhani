@@ -3,6 +3,9 @@ const { ObjectId } = mongoose.Schema.Types
 
 const userSchema = mongoose.Schema(
     {
+        id: {
+            type: ObjectId
+        },
         name: {
             type: String,
             required: true
