@@ -9,8 +9,12 @@ const createPostController = async (req, res) => {
     // console.log(req.user);
     const post = await new Post({
         body,
-        author: req.user
+        author: req.user._id
     }).save()
+
+    const user = await User.findById(req.user._id)
+    user.userposts.push(post._id)
+    await user.save()
     return res.status(200).json(post)
 }
 
@@ -44,6 +48,11 @@ const singlepost = async (req, res) => {
 
 const deletepost = async (req, res) => {
     const post = await Post.findById(req.params.id)
+    if (!post) {
+        return res.status(404).json({
+            message: "Post not found",
+        });
+    }
     if (post) {
         await post.remove()
         return res.status(200).json({ message: 'post deleted' })
@@ -71,9 +80,9 @@ const likeAndUnlikePost = async (req, res) => {
 }
 
 
-// const getfollowingposts = async (req, res) => {//this one
+// const  = async (req, res) => {
 //     try {
-//         const user = await User.findOne(req.user.id)
+//         const user = await User.findById(req.user._id.toString())
 //         console.log(user);
 //         return res.status(200).json(user)
 //     } catch (error) {

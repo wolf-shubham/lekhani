@@ -99,12 +99,26 @@ const followingPosts = async (req, res) => {
                 $in: user.following
             }
         })
-
+        // const test = posts.author.toString()
         res.status(200).json(posts)
     } catch (error) {
         res.status(404).json({ message: 'error not find' })
     }
 }
 
+const deleteUserprofile = async (req, res) => {
+    try {
+        const user = await User.findById(req.user._id)
+        const posts = user.userposts
+        await user.remove()
+        for (let i = 0; i < posts.length; i++) {
+            const post = await Post.findById(posts[i])
+            await post.remove()
+        }
+        return res.status(200).json({ message: 'user profile deleted' })
+    } catch (error) {
+        return res.status(400).json({ message: 'user not registered' })
+    }
+}
 
-module.exports = { registerController, loginController, followAndUnfollowUser, qwerty, followingPosts }
+module.exports = { registerController, loginController, followAndUnfollowUser, qwerty, followingPosts, deleteUserprofile }
