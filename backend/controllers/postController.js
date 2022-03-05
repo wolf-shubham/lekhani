@@ -84,4 +84,5 @@ const likeAndUnlikePost = async (req, res) => {
 // }
 
 
+
 module.exports = { createPostController, getAllPosts, getUserPosts, singlepost, deletepost, likeAndUnlikePost }

@@ -1,4 +1,5 @@
 const bcrypt = require('bcrypt')
+const Post = require('../models/post')
 const User = require("../models/userModel")
 const generateToken = require('../utils/generateToken')
 
@@ -46,7 +47,7 @@ const followAndUnfollowUser = async (req, res) => {
     try {
         const userToFollow = await User.findById(req.body.id)
         const loggedUser = await User.findById(req.user._id)
-        console.log(loggedUser);
+        // console.log(loggedUser);
         if (!userToFollow) {
             return res.status(404).json({ message: 'user not found' })
         }
@@ -80,5 +81,30 @@ const followAndUnfollowUser = async (req, res) => {
     }
 }
 
+const qwerty = async (req, res) => {
+    try {
+        const user = await User.findById(req.user._id)
+        // console.log(user)
+        return res.status(200).json({ user })
+    } catch (error) {
+        return res.status(404).json({ message: 'error' })
+    }
+}
 
-module.exports = { registerController, loginController, followAndUnfollowUser }
+const followingPosts = async (req, res) => {
+    try {
+        const user = await User.findById(req.user._id)
+        const posts = await Post.find({
+            author: {
+                $in: user.following
+            }
+        })
+
+        res.status(200).json(posts)
+    } catch (error) {
+        res.status(404).json({ message: 'error not find' })
+    }
+}
+
+
+module.exports = { registerController, loginController, followAndUnfollowUser, qwerty, followingPosts }
