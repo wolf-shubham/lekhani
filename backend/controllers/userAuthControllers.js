@@ -126,4 +126,33 @@ const deleteUserprofile = async (req, res) => {
     }
 }
 
-module.exports = { registerController, loginController, followAndUnfollowUser, qwerty, followingPosts, deleteUserprofile }
+const getProfile = async (req, res) => {
+    try {
+        const user = await User.findById(req.user._id).populate(
+            "userposts followers following"
+        )
+
+        res.status(200).json({
+            user
+        })
+    } catch (error) {
+        return res.status(400).json({ message: 'can not access user' })
+    }
+}
+
+const getUserProfile = async (req, res) => {
+    try {
+        const user = await User.findById(req.params.id)
+        // .populate("userposts followers following")
+        if (!user) {
+            return res.status(404).json({
+                message: "User not found"
+            })
+        }
+        return res.status(200).json(user)
+    } catch (error) {
+        return res.status(400).json({ message: 'can not access user' })
+    }
+}
+
+module.exports = { registerController, loginController, followAndUnfollowUser, qwerty, followingPosts, deleteUserprofile, getProfile, getUserProfile }
