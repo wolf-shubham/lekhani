@@ -47,7 +47,11 @@ const followAndUnfollowUser = async (req, res) => {
     try {
         const userToFollow = await User.findById(req.body.id)
         const loggedUser = await User.findById(req.user._id)
-        // console.log(loggedUser);
+        const loggeduserid = (loggedUser._id).valueOf();
+        const usertofollowid = (userToFollow._id).valueOf();
+        if (loggeduserid === usertofollowid) {
+            return res.status(400).json({ message: 'cannot follow self' })
+        }
         if (!userToFollow) {
             return res.status(404).json({ message: 'user not found' })
         }
@@ -83,6 +87,7 @@ const followAndUnfollowUser = async (req, res) => {
 
 const qwerty = async (req, res) => {
     try {
+        console.log(req.user._id);
         const user = await User.findById(req.user._id)
         // console.log(user)
         return res.status(200).json({ user })

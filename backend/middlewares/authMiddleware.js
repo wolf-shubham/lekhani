@@ -12,6 +12,7 @@ const authMiddleware = async (req, res, next) => {
             // console.log(decoded)
             req.user = await User.findById(decoded.id).select('-password')
             // console.log(typeof (req.user));
+            // console.log(req.user._id);
             next()
         } catch (error) {
             res.status(404).json(error)

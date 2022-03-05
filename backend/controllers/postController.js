@@ -28,13 +28,18 @@ const getAllPosts = async (req, res) => {
 }
 
 const getUserPosts = async (req, res) => {
-    const posts = await Post.find({ author: req.user._id })
-        .populate('author', '_id name')
-    if (posts) {
-        return res.status(200).json(posts)
-    } else {
-        return res.status(404).json({ message: 'no post available' })
+    try {
+        const posts = await Post.find({ author: req.user._id })
+            .populate('author', '_id name')
+        if (posts) {
+            return res.status(200).json(posts)
+        } else {
+            return res.status(404).json({ message: 'no post available' })
+        }
+    } catch (error) {
+        res.status(404).json({ message: 'user not found' })
     }
+
 }
 
 const singlepost = async (req, res) => {
