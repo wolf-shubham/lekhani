@@ -97,6 +97,32 @@ const likeAndUnlikePost = async (req, res) => {
 
 // }
 
+const addComment = async (req, res) => {
+    try {
+        const post = await Post.findById(req.params.id)
+        if (!post) {
+            return res.status(404).json({ message: 'post not found' })
+        }
 
+        const comment = {
+            text: req.body.comment,
+            commentPostedBy: req.user._id
+        }
 
-module.exports = { createPostController, getAllPosts, getUserPosts, singlepost, deletepost, likeAndUnlikePost }
+        Post.findByIdAndUpdate(req.params.id, {
+            $push: { comments: comment }
+        }, { new: true })
+            // .populate("comments.commentPostedBy", "_id name")
+            .exec((err, result) => {
+                if (err) {
+                    return res.status(422).json({ error: err })
+                } else {
+                    return res.json(result)
+                }
+            })
+    } catch (error) {
+        res.status(401).json({ message: 'comment add fail.' })
+    }
+}
+
+module.exports = { createPostController, getAllPosts, getUserPosts, singlepost, deletepost, likeAndUnlikePost, addComment }
