@@ -9,7 +9,7 @@ route.post('/createpost', authMiddleware, createPostController)
 route.get('/userposts', authMiddleware, getUserPosts)
 route.get('/:id', singlepost)
 route.delete('/:id', authMiddleware, deletepost)
-route.put('/likepost', authMiddleware, likeAndUnlikePost)
+route.get('/likepost/:id', authMiddleware, likeAndUnlikePost)
 route.post('/comment/:id', authMiddleware, addComment)
 
 

@@ -1,4 +1,4 @@
-import { FOLLOWING_USER_POST_FAILURE, FOLLOWING_USER_POST_REQUEST, FOLLOWING_USER_POST_SUCCESS, USER_POST_FAILURE, USER_POST_REQUEST, USER_POST_SUCCESS } from "../constants/postConstants";
+import { FOLLOWING_USER_POST_FAILURE, FOLLOWING_USER_POST_REQUEST, FOLLOWING_USER_POST_SUCCESS, LIKE_POST_FAILURE, LIKE_POST_REQUEST, LIKE_POST_SUCCESS, USER_POST_FAILURE, USER_POST_REQUEST, USER_POST_SUCCESS } from "../constants/postConstants";
 
 export const userPostsReducer = (state = { userPostsData: [] }, action) => {
     switch (action.type) {
@@ -20,6 +20,19 @@ export const followingUsersPostsReducer = (state = { followingUsersPostsData: []
         case FOLLOWING_USER_POST_SUCCESS:
             return { loading: false, posts: action.payload }
         case FOLLOWING_USER_POST_FAILURE:
+            return { loading: false, error: action.payload }
+        default:
+            return state;
+    }
+}
+
+export const likePostsReducer = (state = {}, action) => {
+    switch (action.type) {
+        case LIKE_POST_REQUEST:
+            return { loading: true }
+        case LIKE_POST_SUCCESS:
+            return { loading: false, likePost: action.payload }
+        case LIKE_POST_FAILURE:
             return { loading: false, error: action.payload }
         default:
             return state;

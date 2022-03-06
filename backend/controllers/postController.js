@@ -68,7 +68,7 @@ const deletepost = async (req, res) => {
 
 const likeAndUnlikePost = async (req, res) => {
     try {
-        const post = await Post.findById(req.body.id)
+        const post = await Post.findById(req.params.id)
         if (post.likes.includes(req.user._id)) {
             const index = post.likes.indexOf(req.user._id)
             post.likes.splice(index, 1)

@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { likePostsAction } from '../stateManagement/actions/postActions'
 
 function Post({
     postId,
@@ -10,10 +12,13 @@ function Post({
     authorId,
     authorDP
 }) {
-
+    const dispatch = useDispatch()
     const [liked, setLiked] = useState(false)
+    // console.log(postId);
+
     const handleLike = () => {
         setLiked(!liked)
+        dispatch(likePostsAction(postId))
     }
 
     return (
@@ -24,7 +29,7 @@ function Post({
                 <h2>{authorName}</h2>
             </Link>
             <h3>{postBody}</h3>
-            <h3>5 likes</h3>
+            <h3>{likes.length} likes</h3>
             <button onClick={handleLike} style={{ border: 'none' }}>
                 {liked
                     ? <span className='material-icons' style={{ color: 'red' }}>favorite</span>
