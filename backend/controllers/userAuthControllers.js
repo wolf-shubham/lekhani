@@ -138,7 +138,7 @@ const getProfile = async (req, res) => {
             user
         })
     } catch (error) {
-        return res.status(400).json({ message: 'can not access user' })
+        return res.status(400).json({ message: 'can not access user profile' })
     }
 }
 
@@ -153,8 +153,18 @@ const getUserProfile = async (req, res) => {
         }
         return res.status(200).json(user)
     } catch (error) {
-        return res.status(400).json({ message: 'can not access user' })
+        return res.status(400).json({ message: 'can not access user profile' })
     }
 }
 
-module.exports = { registerController, loginController, followAndUnfollowUser, qwerty, followingPosts, deleteUserprofile, getProfile, getUserProfile }
+const getAllUsers = async (req, res) => {
+    await User.find()
+        .select('-password')
+        .then(users => {
+            return res.json(users)
+        })
+        .catch(error => res.status(401).json({ message: 'error while fetching all posts', error }))
+}
+
+
+module.exports = { registerController, loginController, followAndUnfollowUser, qwerty, followingPosts, deleteUserprofile, getProfile, getUserProfile, getAllUsers }

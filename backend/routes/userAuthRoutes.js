@@ -1,6 +1,6 @@
 const express = require('express')
 const route = express()
-const { registerController, loginController, followAndUnfollowUser, qwerty, followingPosts, deleteUserprofile, getProfile, getUserProfile } = require('../controllers/userAuthControllers')
+const { registerController, loginController, followAndUnfollowUser, qwerty, followingPosts, deleteUserprofile, getProfile, getUserProfile, getAllUsers } = require('../controllers/userAuthControllers')
 const authMiddleware = require('../middlewares/authMiddleware')
 
 route.post('/login', loginController)
@@ -17,6 +17,10 @@ route.delete('/deleteprofile', authMiddleware, deleteUserprofile)
 
 route.get('/profile', authMiddleware, getProfile)
 
+route.get('/allusers', getAllUsers)
+
 route.get('/:id', authMiddleware, getUserProfile)
+
+
 
 module.exports = route
