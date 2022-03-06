@@ -18,14 +18,14 @@ const createPostController = async (req, res) => {
     return res.status(200).json(post)
 }
 
-const getAllPosts = async (req, res) => {
-    await Post.find()
-        .populate('author', '_id name')
-        .then(posts => {
-            return res.json(posts)
-        })
-        .catch(error => res.status(401).json({ message: 'error while fetching all posts', error }))
-}
+// const getAllPosts = async (req, res) => {
+//     await Post.find()
+//         .populate('author', '_id name')
+//         .then(posts => {
+//             return res.json(posts)
+//         })
+//         .catch(error => res.status(401).json({ message: 'error while fetching all posts', error }))
+// }
 
 const getUserPosts = async (req, res) => {
     try {
@@ -125,4 +125,4 @@ const addComment = async (req, res) => {
     }
 }
 
-module.exports = { createPostController, getAllPosts, getUserPosts, singlepost, deletepost, likeAndUnlikePost, addComment }
+module.exports = { createPostController, getUserPosts, singlepost, deletepost, likeAndUnlikePost, addComment }

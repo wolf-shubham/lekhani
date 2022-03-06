@@ -31,14 +31,16 @@ const loginController = async (req, res) => {
     if (!comparePassword) {
         return res.status(404).json({ message: 'Invalid Email or Password' })
     }
+    // console.log(user);
     const token = generateToken(user._id)
     return res.status(200).json({
-        _id: user._id,
-        name: user.name,
-        email: user.email,
-        displaypic: user.displaypic,
-        followers: user.followers,
-        following: user.following,
+        // _id: user._id,
+        // name: user.name,
+        // email: user.email,
+        // displaypic: user.displaypic,
+        // followers: user.followers,
+        // following: user.following,
+        user,
         token, message: "successful login"
     })
 }
@@ -103,9 +105,9 @@ const followingPosts = async (req, res) => {
             author: {
                 $in: user.following
             }
-        })
+        }).populate('author likes comments.commentPostedBy', '-password -followers -following')
         // const test = posts.author.toString()
-        res.status(200).json(posts)
+        res.status(200).json({ posts: posts.reverse() })
     } catch (error) {
         res.status(404).json({ message: 'error not find' })
     }

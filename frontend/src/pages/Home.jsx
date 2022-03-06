@@ -1,32 +1,45 @@
-import React, { useEffect, useState } from 'react'
-import axios from 'axios'
+import React, { useEffect } from 'react'
+import Post from '../components/Post'
+import UserList from '../components/UserList'
+import { useDispatch, useSelector } from 'react-redux'
+import { followingUsersPosts } from '../stateManagement/actions/postActions'
 
 function Home() {
-    const [data, setData] = useState()
+    const dispatch = useDispatch()
+    const userInfo = JSON.parse(localStorage.getItem('userInfo'))
+
+    const { loading, posts, error } = useSelector((state) => state.followingUserPosts)
+
     useEffect(() => {
-        const config = {
-            headers: {
-                'Content-type': 'application/json',
-            }
-        }
-        axios.get('/api/post/allposts', config)
-            .then(result => {
-                setData(result.data)
-            })
-            .catch(error => {
-                console.log(error);
-            })
-    }, [setData])
-    console.log(data);
+        dispatch(followingUsersPosts())
+    }, [])
     return (
         <>
             <div>Home</div>
-            {data?.map(post => (
-                <div key={post._id} style={{ backgroundColor: 'darkgrey' }}>
-                    <h2>{post.body}</h2>
-                    <h4>author : {post.author.name}</h4>
-                </div>
-            ))}
+            <i className='material-icons' >favorite_border</i>
+            <i className='material-icons md-48' >favorite</i>
+            {
+                posts && posts.length > 0
+                    ? posts.map((post) => (
+                        <Post
+                            key={post._id}
+                            postId={post._id}
+                            postBody={post.body}
+                            likes={post.likes}
+                            comments={post.comments}
+                            authorName={post.author.name}
+                            authorId={post.author._id}
+                            authorDP={post.author.displaypic}
+                        />
+                    ))
+                    : <h1>no user post available</h1>
+            }
+
+            <UserList
+                userId='user._id'
+                name='shubham'
+                displaypic='user.displaypic'
+            />
         </>
     )
 }
