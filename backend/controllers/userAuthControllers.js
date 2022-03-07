@@ -24,6 +24,7 @@ const registerController = async (req, res) => {
 const loginController = async (req, res) => {
     const { email, password } = req.body
     const user = await User.findOne({ email })
+        .populate('userposts following followers')
     if (!user) {
         return res.status(404).json({ message: 'Invalid Email or Password' })
     }

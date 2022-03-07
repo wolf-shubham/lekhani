@@ -1,9 +1,90 @@
-import React from 'react'
+import { Button, Dialog } from '@mui/material'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
+import Post from '../components/Post'
+import UserList from '../components/UserList'
+import { likePostsAction, userPostsAction } from '../stateManagement/actions/postActions'
 
 function Profile() {
+
+    const dispatch = useDispatch()
+
+    const [followers, setFollowers] = useState()
+    const [following, setFollowing] = useState()
+
+    const { loading, userPostsData, error } = useSelector((state) => state.userPosts)
+    const { loading: userLoading, userData, error: userError } = useSelector((state) => state.userLogin)
+
+    const { user } = userData
+    useEffect(() => {
+        dispatch(userPostsAction())
+    }, [dispatch])
     return (
         <>
             <div>Profile</div>
+            <div>
+                <img src={user.displaypic} alt='display pic' style={{ width: '35px', borderRadius: '50%' }} />
+                <Link to={`/user/${user._id}`}>
+                    <span>{user.name}</span>
+                </Link>
+                <h3>{user.userposts.length} Posts</h3>
+                <Button style={{ border: 'none' }} onClick={() => setFollowers(!followers)} >
+                    <h3>{user.followers.length} Followers</h3>
+                </Button>
+                <Button style={{ border: 'none' }} onClick={() => setFollowing(!following)} disabled={user.following.length === 0 ? true : false}>
+                    <h3>{user.following.length} Following</h3>
+                </Button>
+            </div>
+            {
+                userPostsData && userPostsData.length > 0
+                    ? (
+                        userPostsData.map(post => (
+                            <Post
+                                key={post._id}
+                                postId={post._id}
+                                postBody={post.body}
+                                likes={post.likes}
+                                comments={post.comments}
+                                authorName={post.author.name}
+                                authorId={post.author._id}
+                                authorDP={post.author.displaypic}
+                            />
+                        ))
+                    )
+                    : <h2>no post of user</h2>
+            }
+            <Dialog open={followers} onClose={() => setFollowers(!followers)}>
+                <div className="DialogBox">
+                    <h4>Followers</h4>
+                    {user && user.followers.length > 0
+                        ? user.followers.map((followers) => (
+                            <UserList
+                                key={followers._id}
+                                userId={followers._id}
+                                name={followers.name}
+                                displaypic={followers.displaypic}
+                            />
+                        ))
+                        : <h3>No follower as of now...</h3>
+                    }
+                </div>
+            </Dialog>
+            <Dialog open={following} onClose={() => setFollowing(!following)}>
+                <div className="DialogBox">
+                    <h4>Following</h4>
+                    {user && user.following.length > 0
+                        ? user.following.map((following) => (
+                            <UserList
+                                key={following._id}
+                                userId={following._id}
+                                name={following.name}
+                                displaypic={following.displaypic}
+                            />
+                        ))
+                        : <h3>Not Following as of now...</h3>}
+                </div>
+            </Dialog>
         </>
     )
 }

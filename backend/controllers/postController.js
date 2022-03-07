@@ -30,7 +30,7 @@ const createPostController = async (req, res) => {
 const getUserPosts = async (req, res) => {
     try {
         const posts = await Post.find({ author: req.user._id })
-            .populate('author', '_id name')
+            .populate('author', '_id name displaypic')
         if (posts) {
             return res.status(200).json(posts)
         } else {
