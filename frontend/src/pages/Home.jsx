@@ -4,10 +4,11 @@ import UserList from '../components/UserList'
 import { useDispatch, useSelector } from 'react-redux'
 import { followingUsersPosts } from '../stateManagement/actions/postActions'
 import { getAllUserAction } from '../stateManagement/actions/userActions'
+import { Link } from 'react-router-dom'
 
 function Home() {
     const dispatch = useDispatch()
-    const userInfo = JSON.parse(localStorage.getItem('userInfo'))
+    // const userInfo = JSON.parse(localStorage.getItem('userInfo'))
 
     const { loading, posts, error } = useSelector((state) => state.followingUserPosts)
     const { loading: getUserLoading, users, error: getUserError } = useSelector((state) => state.getAllUsers)
@@ -19,9 +20,11 @@ function Home() {
     }, [dispatch])
     return (
         <>
+            <br />
+            <br />
             <div>Home</div>
-            <i className='material-icons' >favorite_border</i>
-            <i className='material-icons md-48' >favorite</i>
+            <Link to='/profile'>Profile</Link>
+            <h2>Posts</h2>
             {
                 posts && posts.length > 0
                     ? posts.map((post) => (

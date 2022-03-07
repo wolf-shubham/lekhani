@@ -117,7 +117,7 @@ const addComment = async (req, res) => {
                 if (err) {
                     return res.status(422).json({ error: err })
                 } else {
-                    return res.json(result)
+                    return res.json({ message: 'comment added' })
                 }
             })
     } catch (error) {
