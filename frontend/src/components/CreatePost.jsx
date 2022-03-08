@@ -1,21 +1,15 @@
-import axios from 'axios'
 import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { createPostAction } from '../stateManagement/actions/postActions'
 
 function CreatePost() {
+
+    const dispatch = useDispatch()
     const [body, setBody] = useState('')
-    const userInfo = JSON.parse(localStorage.getItem('userInfo'))
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        // console.log(body)
-        const config = {
-            headers: {
-                'Content-type': 'application/json',
-                'Authorization': `Bearer ${userInfo.token}`
-            }
-        }
-        const { data } = await axios.post('/api/post/createpost', { body }, config)
-        console.log(data);
+        dispatch(createPostAction(body))
     }
 
     return (

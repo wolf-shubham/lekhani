@@ -28,18 +28,36 @@ const createPostController = async (req, res) => {
 // }
 
 const getUserPosts = async (req, res) => {
+    // try {
+    //     const posts = await Post.find({ author: req.user._id })
+    //         .populate('author likes')
+    //     if (posts) {
+    //         return res.status(200).json(posts)
+    //     } else {
+    //         return res.status(404).json({ message: 'no post available' })
+    //     }
+    // } catch (error) {
+    //     res.status(404).json({ message: 'user not found' })
+    // }
     try {
-        const posts = await Post.find({ author: req.user._id })
-            .populate('author', '_id name displaypic')
-        if (posts) {
-            return res.status(200).json(posts)
-        } else {
-            return res.status(404).json({ message: 'no post available' })
-        }
-    } catch (error) {
-        res.status(404).json({ message: 'user not found' })
-    }
+        const user = await User.findById(req.user._id);
 
+        const posts = [];
+
+        for (let i = 0; i < user.userposts.length; i++) {
+            const post = await Post.findById(user.userposts[i]).populate(
+                "likes comments.commentPostedBy author"
+            );
+            posts.push(post);
+        }
+
+        res.status(200).json({ posts })
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message,
+        });
+    }
 }
 
 const singlepost = async (req, res) => {

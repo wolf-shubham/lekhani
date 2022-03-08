@@ -5,37 +5,36 @@ import { Link } from 'react-router-dom'
 import Post from '../components/Post'
 import UserList from '../components/UserList'
 import { userPostsAction } from '../stateManagement/actions/postActions'
-import { loadUserAction } from '../stateManagement/actions/userActions'
 
 function Profile() {
 
     const dispatch = useDispatch()
 
-    const [followers, setFollowers] = useState(false)
-    const [following, setFollowing] = useState(false)
+    const [followers, setFollowers] = useState()
+    const [following, setFollowing] = useState()
 
-    const { loading: userLoading, userSelfData: userData, error: userError } = useSelector((state) => state.user)
+    const { loading: userLoading, userData, error: userError } = useSelector((state) => state.userLogin)
     const { loading, userPostsData, error } = useSelector((state) => state.userPosts)
 
-    // const { user } = userData
+    const { user } = userData
+    console.log(userPostsData);
     useEffect(() => {
         dispatch(userPostsAction())
     }, [dispatch])
     return (
         <>
             <div>Profile</div>
-            <h2>{userData._id}</h2>
             <div>
-                <img src={userData.displaypic} alt='display pic' style={{ width: '35px', borderRadius: '50%' }} />
-                <Link to={`/user/${userData._id}`}>
-                    <span>{userData.name}</span>
+                <img src={user.displaypic} alt='display pic' style={{ width: '35px', borderRadius: '50%' }} />
+                <Link to={`/user/${user._id}`}>
+                    <span>{user.name}</span>
                 </Link>
-                <h3>{userData.userposts.length} Posts</h3>
+                <h3>{user.userposts.length} Posts</h3>
                 <Button style={{ border: 'none' }} onClick={() => setFollowers(!followers)} >
-                    <h3>{userData.followers.length} Followers</h3>
+                    <h3>{user.followers.length} Followers</h3>
                 </Button>
-                <Button style={{ border: 'none' }} onClick={() => setFollowing(!following)} disabled={userData.following.length === 0 ? true : false}>
-                    <h3>{userData.following.length} Following</h3>
+                <Button style={{ border: 'none' }} onClick={() => setFollowing(!following)} disabled={user.following.length === 0 ? true : false}>
+                    <h3>{user.following.length} Following</h3>
                 </Button>
             </div>
             {
@@ -51,7 +50,7 @@ function Profile() {
                                 authorName={post.author.name}
                                 authorId={post.author._id}
                                 authorDP={post.author.displaypic}
-                            // isAccount={true}
+                                isAccount={true}
                             />
                         ))
                     )
@@ -60,8 +59,8 @@ function Profile() {
             <Dialog open={followers} onClose={() => setFollowers(!followers)}>
                 <div className="DialogBox">
                     <h4>Followers</h4>
-                    {userData && userData.followers.length > 0
-                        ? userData.followers.map((followers) => (
+                    {user && user.followers.length > 0
+                        ? user.followers.map((followers) => (
                             <UserList
                                 key={followers._id}
                                 userId={followers._id}
@@ -76,8 +75,8 @@ function Profile() {
             <Dialog open={following} onClose={() => setFollowing(!following)}>
                 <div className="DialogBox">
                     <h4>Following</h4>
-                    {userData && userData.following.length > 0
-                        ? userData.following.map((following) => (
+                    {user && user.following.length > 0
+                        ? user.following.map((following) => (
                             <UserList
                                 key={following._id}
                                 userId={following._id}

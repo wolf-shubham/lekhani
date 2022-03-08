@@ -1,5 +1,5 @@
 import axios from "axios"
-import { ADD_COMMENT_FAILURE, ADD_COMMENT_REQUEST, ADD_COMMENT_SUCCESS, FOLLOWING_USER_POST_FAILURE, FOLLOWING_USER_POST_REQUEST, FOLLOWING_USER_POST_SUCCESS, LIKE_POST_FAILURE, LIKE_POST_REQUEST, LIKE_POST_SUCCESS, USER_POST_FAILURE, USER_POST_REQUEST, USER_POST_SUCCESS } from "../constants/postConstants"
+import { ADD_COMMENT_FAILURE, ADD_COMMENT_REQUEST, ADD_COMMENT_SUCCESS, CREATE_POST_FAILURE, CREATE_POST_REQUEST, CREATE_POST_SUCCESS, FOLLOWING_USER_POST_FAILURE, FOLLOWING_USER_POST_REQUEST, FOLLOWING_USER_POST_SUCCESS, LIKE_POST_FAILURE, LIKE_POST_REQUEST, LIKE_POST_SUCCESS, USER_POST_FAILURE, USER_POST_REQUEST, USER_POST_SUCCESS } from "../constants/postConstants"
 
 export const userPostsAction = () => async (dispatch, getState) => {
     try {
@@ -12,7 +12,7 @@ export const userPostsAction = () => async (dispatch, getState) => {
             }
         }
         const { data } = await axios.get('/api/post/userposts', config)
-        dispatch({ type: USER_POST_SUCCESS, payload: data })
+        dispatch({ type: USER_POST_SUCCESS, payload: data.posts })
 
     } catch (error) {
         dispatch({ type: USER_POST_FAILURE, payload: error.message })
@@ -72,5 +72,24 @@ export const addCommentAction = (id, comment) => async (dispatch, getState) => {
 
     } catch (error) {
         dispatch({ type: ADD_COMMENT_FAILURE, payload: error.message })
+    }
+}
+
+
+export const createPostAction = (body) => async (dispatch, getState) => {
+    try {
+        dispatch({ type: CREATE_POST_REQUEST })
+        const { userLogin: { userData } } = getState()
+        const config = {
+            headers: {
+                'Content-type': 'application/json',
+                'Authorization': `Bearer ${userData.token}`
+            }
+        }
+        const { data } = await axios.post(`/api/post/createpost`, { body }, config)
+        dispatch({ type: CREATE_POST_SUCCESS, payload: data })
+
+    } catch (error) {
+        dispatch({ type: CREATE_POST_FAILURE, payload: error.message })
     }
 }

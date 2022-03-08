@@ -11,7 +11,7 @@ function Register() {
     const [password, setPassword] = useState('')
 
     const dispatch = useDispatch()
-    const userRegister = useSelector((state) => state.userRegister)
+    const userRegister = useSelector((state) => state.userLogin)
     const { loading, userData, error } = userRegister
 
     useEffect(() => {

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { addCommentAction, followingUsersPosts, likePostsAction } from '../stateManagement/actions/postActions'
+import { addCommentAction, followingUsersPosts, likePostsAction, userPostsAction } from '../stateManagement/actions/postActions'
 import { Button, Dialog } from '@mui/material'
 import UserList from './UserList'
 import Comment from './Comment'
@@ -13,7 +13,7 @@ function Post({
     comments = [],
     authorName,
     authorId,
-    authorDP
+    authorDP,
 }) {
     const dispatch = useDispatch()
     const [liked, setLiked] = useState(false)
@@ -25,8 +25,8 @@ function Post({
 
     const handleLike = async () => {
         setLiked(!liked)
-        await dispatch(likePostsAction(postId))
-        dispatch(followingUsersPosts())
+        dispatch(likePostsAction(postId))
+        dispatch(userPostsAction());
     }
 
     const addCommentHandler = async (e) => {
@@ -34,7 +34,6 @@ function Post({
         await dispatch(addCommentAction(postId, addComment))
         dispatch(followingUsersPosts())
     }
-
     useEffect(() => {
         likes.forEach((item) => {
             if (item._id === user._id) {
@@ -59,7 +58,7 @@ function Post({
                     }
                 </Button>
                 <br />
-                <Button style={{ border: 'none' }} onClick={() => setLikesUser(!likesUser)} disabled={likes.length === 0 ? true : false}>
+                <Button style={{ border: 'none' }} onClick={() => setLikesUser(!likesUser)} >
                     <h3>{likes.length} likes</h3>
                 </Button>
                 <Button style={{ border: 'none' }} onClick={() => setAllComments(!allComments)} disabled={comments.length === 0 ? true : false}>

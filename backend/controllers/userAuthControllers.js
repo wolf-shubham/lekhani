@@ -131,13 +131,9 @@ const deleteUserprofile = async (req, res) => {
 
 const getProfile = async (req, res) => {
     try {
-        const user = await User.findById(req.user._id).populate(
-            "userposts followers following"
-        )
-
-        res.status(200).json({
-            user
-        })
+        const user = await User.findById(req.user._id)
+            .populate("userposts followers following")
+        res.status(200).json({ user })
     } catch (error) {
         return res.status(400).json({ message: 'can not access user profile' })
     }

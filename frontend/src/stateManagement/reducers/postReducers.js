@@ -1,6 +1,6 @@
-import { ADD_COMMENT_FAILURE, ADD_COMMENT_REQUEST, ADD_COMMENT_SUCCESS, FOLLOWING_USER_POST_FAILURE, FOLLOWING_USER_POST_REQUEST, FOLLOWING_USER_POST_SUCCESS, LIKE_POST_FAILURE, LIKE_POST_REQUEST, LIKE_POST_SUCCESS, USER_POST_FAILURE, USER_POST_REQUEST, USER_POST_SUCCESS } from "../constants/postConstants";
+import { ADD_COMMENT_FAILURE, ADD_COMMENT_REQUEST, ADD_COMMENT_SUCCESS, CREATE_POST_FAILURE, CREATE_POST_REQUEST, CREATE_POST_SUCCESS, FOLLOWING_USER_POST_FAILURE, FOLLOWING_USER_POST_REQUEST, FOLLOWING_USER_POST_SUCCESS, LIKE_POST_FAILURE, LIKE_POST_REQUEST, LIKE_POST_SUCCESS, USER_POST_FAILURE, USER_POST_REQUEST, USER_POST_SUCCESS } from "../constants/postConstants";
 
-export const userPostsReducer = (state = { userPostsData: [] }, action) => {
+export const userPostsReducer = (state = {}, action) => {
     switch (action.type) {
         case USER_POST_REQUEST:
             return { loading: true }
@@ -46,6 +46,19 @@ export const addCommentReducer = (state = {}, action) => {
         case ADD_COMMENT_SUCCESS:
             return { loading: false, comments: action.payload }
         case ADD_COMMENT_FAILURE:
+            return { loading: false, error: action.payload }
+        default:
+            return state;
+    }
+}
+
+export const createPostReducer = (state = {}, action) => {
+    switch (action.type) {
+        case CREATE_POST_REQUEST:
+            return { loading: true }
+        case CREATE_POST_SUCCESS:
+            return { loading: false, createPost: action.payload }
+        case CREATE_POST_FAILURE:
             return { loading: false, error: action.payload }
         default:
             return state;

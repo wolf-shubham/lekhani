@@ -5,6 +5,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { followingUsersPosts } from '../stateManagement/actions/postActions'
 import { getAllUserAction } from '../stateManagement/actions/userActions'
 import { Link } from 'react-router-dom'
+import CreatePost from '../components/CreatePost'
+import { loadUserReducer } from '../stateManagement/reducers/userReducer'
 
 function Home() {
     const dispatch = useDispatch()
@@ -24,6 +26,7 @@ function Home() {
             <br />
             <div>Home</div>
             <Link to='/profile'>Profile</Link>
+            <CreatePost />
             <h2>Posts</h2>
             {
                 posts && posts.length > 0

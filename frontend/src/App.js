@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Header from "./components/Header";
 import Home from "./pages/Home";
@@ -6,8 +8,17 @@ import Login from "./pages/Login";
 import Profile from "./pages/Profile";
 import Register from "./pages/Register";
 import SinglePost from "./pages/SinglePost";
+import { loadUserAction } from "./stateManagement/actions/userActions";
 
 function App() {
+
+  const dispatch = useDispatch()
+  useEffect(() => {
+    dispatch(loadUserAction())
+  }, [dispatch])
+
+
+
   return (
     <BrowserRouter>
       <Header />

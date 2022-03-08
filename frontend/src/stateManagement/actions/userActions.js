@@ -1,5 +1,5 @@
 import axios from "axios"
-import { GET_ALL_USER_FAILURE, GET_ALL_USER_REQUEST, GET_ALL_USER_SUCCESS, USER_LOGIN_REQUEST, USER_LOGIN_SUCCESS, USER_LOGOUT, USER_REGISTER_REQUEST, USER_REGISTER_SUCCESS } from "../constants/userConstants"
+import { GET_ALL_USER_FAILURE, GET_ALL_USER_REQUEST, GET_ALL_USER_SUCCESS, LOAD_USER_FAILURE, LOAD_USER_REQUEST, LOAD_USER_SUCCESS, USER_LOGIN_REQUEST, USER_LOGIN_SUCCESS, USER_LOGOUT, USER_REGISTER_REQUEST, USER_REGISTER_SUCCESS } from "../constants/userConstants"
 
 export const LoginAction = (email, password) => async (dispatch) => {
     try {
@@ -55,5 +55,25 @@ export const getAllUserAction = () => async (dispatch) => {
 
     } catch (error) {
         dispatch({ type: GET_ALL_USER_FAILURE, payload: error.message })
+    }
+}
+
+
+export const loadUserAction = () => async (dispatch, getState) => {
+    try {
+        dispatch({ type: LOAD_USER_REQUEST })
+        const { userLogin: { userData } } = getState()
+        const config = {
+            headers: {
+                'Content-type': 'application/json',
+                'Authorization': `Bearer ${userData.token}`
+            }
+        }
+        const { data } = await axios.get('/api/user/profile', config)
+        // console.log(data);
+        dispatch({ type: LOAD_USER_SUCCESS, payload: data.user })
+
+    } catch (error) {
+        dispatch({ type: LOAD_USER_FAILURE, payload: error.message })
     }
 }
