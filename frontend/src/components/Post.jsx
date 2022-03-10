@@ -20,7 +20,6 @@ function Post({
     const [likesUser, setLikesUser] = useState(false)
     const [addComment, setAddComment] = useState('')
     const [allComments, setAllComments] = useState(false)
-    // console.log(postId);
     const { user } = JSON.parse(localStorage.getItem('userInfo'))
 
     const handleLike = async () => {
@@ -65,10 +64,6 @@ function Post({
                     <h3>{comments.length} comments</h3>
                 </Button>
 
-                {/* <Button onClick={() => setAllComments(!allComments)}>
-                <i className="material-icons">add_comment</i>
-            </Button> */}
-                {/* <CircularProgress /> */}
                 <Dialog open={likesUser} onClose={() => setLikesUser(!likesUser)}>
                     <div className="DialogBox">
                         <h4>Liked By</h4>
