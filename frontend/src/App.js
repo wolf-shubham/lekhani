@@ -17,8 +17,6 @@ function App() {
     dispatch(loadUserAction())
   }, [dispatch])
 
-
-
   return (
     <BrowserRouter>
       <Header />

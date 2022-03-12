@@ -6,15 +6,12 @@ import { followingUsersPosts } from '../stateManagement/actions/postActions'
 import { getAllUserAction } from '../stateManagement/actions/userActions'
 import { Link } from 'react-router-dom'
 import CreatePost from '../components/CreatePost'
-import { loadUserReducer } from '../stateManagement/reducers/userReducer'
 
 function Home() {
     const dispatch = useDispatch()
-    // const userInfo = JSON.parse(localStorage.getItem('userInfo'))
 
     const { loading, posts, error } = useSelector((state) => state.followingUserPosts)
     const { loading: getUserLoading, users, error: getUserError } = useSelector((state) => state.getAllUsers)
-    // console.log(users);
 
     useEffect(() => {
         dispatch(followingUsersPosts())

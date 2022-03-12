@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom'
 import Post from '../components/Post'
 import UserList from '../components/UserList'
 import { userPostsAction } from '../stateManagement/actions/postActions'
-import { loadUserAction } from '../stateManagement/actions/userActions'
 
 function Profile() {
 
